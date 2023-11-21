@@ -4,16 +4,15 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const PORT = process.env.PORT || 8800;
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URL, {
-    useNEWUrlParser: true,
-    useUnifiedTopology: true,
-}).then(()=>{
+mongoose.connect(process.env.MONGO_URL)
+.then(()=>{
     console.log('Connected to the database');
 }).catch ((err) => {
-    console.log(err);
+    console.log('Error connecting to the database:', err);
 });
 
 app.use(express.json());
@@ -28,6 +27,8 @@ app.get("/users", (req, res) => {
     res.send("Users Page")
 });
 
-app.listen(8800, () => {
+app.listen(PORT, () => {
     console.log("Backend Server is running")
 });
+
+module.exports = app;
