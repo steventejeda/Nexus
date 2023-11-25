@@ -29,8 +29,24 @@ app.get("/", (req, res) => {
     res.send("Welcome to homepage")
 }); 
 
-app.listen(PORT, () => {
-    console.log("Backend Server is running")
-});
+exports.startServer = () => {
+  if (process.env.NODE_ENV === 'test') {
+    return new Promise((resolve) => {
+      const server = app.listen(PORT, () => {
+        console.log("Backend Server is running");
+        resolve(server);
+      });
+    });
+  } else {
+    const server = app.listen(PORT, () => {
+      console.log("Backend Server is running");
+    });
+    return server;
+  }
+};
+
+if (require.main === module) {
+  exports.startServer();
+}
 
 module.exports = app;
