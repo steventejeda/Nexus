@@ -1,17 +1,21 @@
 const request = require('supertest');
 const mongoose = require("mongoose");
-const app = require('./index');
+const app = require('../index');
+const PORT = process.env.PORT || 8800;
 
 require("dotenv").config();
 
+let server;
 
-beforeEach(async () => {
+beforeAll(async () => {
     await mongoose.connect(process.env.MONGO_URL);
+    server = app.listen(PORT);
   });
   
 
-afterEach(async () => {
+afterAll(async () => {
     await mongoose.connection.close();
+    await server.close();
   });
 
 describe('GET /', () => {
@@ -22,10 +26,10 @@ describe('GET /', () => {
   });
 });
 
-describe('GET /users', () => {
-  it('It should return "Users Page"', async () => {
-    const response = await request(app).get('/users');
+describe('GET /api/users', () => {
+  it('It should return "This is the user route"', async () => {
+    const response = await request(app).get('/api/users');
     expect(response.statusCode).toBe(200);
-    expect(response.text).toBe('Users Page');
+    expect(response.text).toBe('This is the user route');
   });
 });

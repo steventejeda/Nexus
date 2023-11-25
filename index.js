@@ -5,6 +5,8 @@ const dotenv = require("dotenv");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const PORT = process.env.PORT || 8800;
+const userRoute = require("./routes/users");
+const authRoute = require("./routes/auth");
 
 dotenv.config();
 
@@ -15,20 +17,36 @@ mongoose.connect(process.env.MONGO_URL)
     console.log('Error connecting to the database:', err);
 });
 
+//Middleware
 app.use(express.json());
 app.use(helmet());
 app.use(morgan());
 
+app.use("/api/users", userRoute);
+app.use("/api/auth", authRoute);
+
 app.get("/", (req, res) => {
     res.send("Welcome to homepage")
-});
+}); 
 
-app.get("/users", (req, res) => {
-    res.send("Users Page")
-});
+exports.startServer = () => {
+  if (process.env.NODE_ENV === 'test') {
+    return new Promise((resolve) => {
+      const server = app.listen(PORT, () => {
+        console.log("Backend Server is running");
+        resolve(server);
+      });
+    });
+  } else {
+    const server = app.listen(PORT, () => {
+      console.log("Backend Server is running");
+    });
+    return server;
+  }
+};
 
-app.listen(PORT, () => {
-    console.log("Backend Server is running")
-});
+if (require.main === module) {
+  exports.startServer();
+}
 
 module.exports = app;
