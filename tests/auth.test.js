@@ -1,7 +1,6 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../index');
-const User = require('../models/User');
 const PORT = 8802;
 
 require('dotenv').config();
@@ -21,11 +20,10 @@ afterAll(async () => {
 
 describe('User API Endpoints', () => {
   const testUserCredentials = {
-    username: 'testuser',
-    email: 'testuser@example.com',
+    username: `testuser_${Date.now()}`,
+    email: `testuser_${Date.now()}@example.com`,
     password: 'testpassword',
-  };
-
+};
 
   describe('POST /api/auth/register', () => {
     it('should register a new user', async () => {
