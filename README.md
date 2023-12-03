@@ -11,7 +11,7 @@ Welcome to Nexus, the social media application designed to connect you with frie
 ### Interactive News Feed:
 - Share your thoughts, updates, and experiences with your network through posts.
 - Engage with the community by liking posts that resonate with you.
-- 
+  
 ### Follow and Unfollow:
 - Stay updated with the latest content from your favorite connections by following them.
 - Manage your network by unfollowing users when needed.
